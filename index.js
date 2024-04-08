@@ -16,6 +16,7 @@ app.get('/token', async (req, res) => {
     var decipher = crypto.createDecipheriv(algorithm, Secretkey, iv);
     var encTxt = decipher.update(dec.toString('base64url'), 'base64url', 'utf8');
 
+    var message = encTxt.split('|')[1] + "|" + encTxt.split('|')[0];
     var cipher = crypto.createCipheriv(algorithm, Secretkey, iv);
     var ciph = cipher.update(message, 'utf8', 'base64url');
     ciph += cipher.final('base64url');
