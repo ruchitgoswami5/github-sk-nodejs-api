@@ -9,8 +9,8 @@ const iv = Buffer.from('AAAAAAAAAAAAAAAAAAAAAA==', 'base64url');
 
 app.get('/token', async (req, res) => {
   try {
-    var input = req.query.data;
-    var inputKey = req.query.dataKey;
+    var input = req.query.request_token;
+    var inputKey = req.query.secret_key;
     if(input && inputKey) {
       var decBytes = Buffer.from(input, 'base64url');
       var Secretkey = Buffer.from(inputKey, "utf-8");
