@@ -37,26 +37,18 @@ app.get('/scripmaster', async (req, res) => {
   try {
     var accessToken = req.query.access_token;
     if(accessToken) {
-      axios.get('https://api.sharekhan.com/skapi/services/master/NF', {
+      const response = await axios.get('https://api.sharekhan.com/skapi/services/master/NF', {
         headers: {
           'Content-Type': 'application/json',
           'access-token': `${accessToken}`
         }
-      })
-      .then(response => {
-        console.log(response);
-        res.send(response);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        res.status(400).send('Error: '+ error);
       });
-      
+      res.json(response.data);
     } else {
       res.status(400).send('Invalid Input parameters');
     }
   } catch (error) {
-    res.status(400).send('Error while getting list of repositories');
+    res.status(400).send('Error '+ error);
   }
 });
 
