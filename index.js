@@ -35,6 +35,7 @@ app.get('/token', async (req, res) => {
 
 app.get('/scripmaster', async (req, res) => {
   try {
+    var newResp = {};
     var accessToken = req.query.access_token;
     if(accessToken) {
       const response = await axios.get('https://api.sharekhan.com/skapi/services/master/NF', {
@@ -43,7 +44,19 @@ app.get('/scripmaster', async (req, res) => {
           'access-token': `${accessToken}`
         }
       });
-      res.json(response.data);
+      if(response.data && response.data.data.length) {
+        newResp.status = response.data.status;
+        newResp.message = response.data.message;
+        newResp.timestamp = response.data.timestamp;
+        newResp.data = [];
+        for(let i=0; i<response.data.data.length; i++) {
+          let data = response.data.data[i];
+          if((data.tradingSymbol == 'BANKNIFTY' || data.tradingSymbol == 'NIFTY') && (data.optionType == 'CE' || data.optionType == 'PE')) {
+            newResp.data.push(data);
+          }
+        }
+      }
+      res.json(newResp);
     } else {
       res.status(400).send('Invalid Input parameters');
     }
