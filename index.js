@@ -45,11 +45,13 @@ app.get('/scripmaster', async (req, res) => {
       })
       .then(response => {
         console.log(response);
+        res.send(response);
       })
       .catch(error => {
-        console.error('Error:', error)
+        console.error('Error:', error);
+        res.status(400).send('Error: '+ error);
       });
-      res.send(encData);
+      
     } else {
       res.status(400).send('Invalid Input parameters');
     }
