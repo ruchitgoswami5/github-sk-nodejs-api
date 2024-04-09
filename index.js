@@ -28,7 +28,31 @@ app.get('/token', async (req, res) => {
     } else {
       res.status(400).send('Invalid Input parameters');
     }
-    
+  } catch (error) {
+    res.status(400).send('Error while getting list of repositories');
+  }
+});
+
+app.get('/scripmaster', async (req, res) => {
+  try {
+    var accessToken = req.query.access_token;
+    if(accessToken) {
+      axios.get('https://api.sharekhan.com/skapi/services/master/NF', {
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token': `${accessToken}`
+        }
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error('Error:', error)
+      });
+      res.send(encData);
+    } else {
+      res.status(400).send('Invalid Input parameters');
+    }
   } catch (error) {
     res.status(400).send('Error while getting list of repositories');
   }
