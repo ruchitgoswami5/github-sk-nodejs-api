@@ -37,6 +37,7 @@ app.get('/scripmaster', async (req, res) => {
   try {
     var newResp = {};
     var accessToken = req.query.access_token;
+    var expiryDate = req.query.expiry_date;
     if(accessToken) {
       const response = await axios.get('https://api.sharekhan.com/skapi/services/master/NF', {
         headers: {
@@ -51,7 +52,8 @@ app.get('/scripmaster', async (req, res) => {
         newResp.data = [];
         for(let i=0; i<response.data.data.length; i++) {
           let data = response.data.data[i];
-          if((data.tradingSymbol == 'BANKNIFTY' || data.tradingSymbol == 'NIFTY') && (data.optionType == 'CE' || data.optionType == 'PE')) {
+          if((data.tradingSymbol == 'BANKNIFTY' || data.tradingSymbol == 'NIFTY') && (data.optionType == 'CE' || data.optionType == 'PE')
+            && (!expiryDate || (data.expiry == expiryDate))) {
             newResp.data.push(data);
           }
         }
