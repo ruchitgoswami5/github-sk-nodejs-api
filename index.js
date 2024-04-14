@@ -64,7 +64,12 @@ app.get('/scripmaster', async (req, res) => {
       res.status(400).send('Invalid Input parameters');
     }
   } catch (error) {
-    res.status(400).send('Error '+ error);
+    if (error.code === 'ECONNABORTED') {
+      console.error('Request timed out');
+      res.status(400).send('Error: '+ Request timed out);
+    } else {
+      res.status(400).send('Error: '+ error);
+    }
   }
 });
 
