@@ -48,6 +48,7 @@ app.get('/scripmaster', async (req, res) => {
         },
         timeout: 5000
       });
+      console.log('before resp');
       if(response.data && response.data.data.length) {
         console.log('response.data-->'+response.data);
         newResp.status = response.data.status;
