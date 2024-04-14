@@ -46,7 +46,8 @@ app.get('/scripmaster', async (req, res) => {
           'Content-Type': 'application/json',
           'access-token': `${accessToken}`
         },
-        timeout: 5000
+        timeout: 5000,
+        crossDomain: true
       });
       console.log('before resp');
       if(response.data && response.data.data.length) {
