@@ -78,6 +78,37 @@ app.get('/scripmaster', async (req, res) => {
   }
 });
 
+app.get('/scripmaster1', async (req, res) => {
+  try {
+    var newResp = {};
+    var accessToken = req.query.access_token;
+    var expiryDate = req.query.expiry_date;
+    console.log('expiryDate-->'+expiryDate);
+    if(accessToken) {
+      console.log('accessToken-->'+accessToken);
+      const response = await axios.get('https://api.sharekhan.com/skapi/services/master/NF', {
+        headers: {
+          'Content-Type': 'application/json',
+          'access-token': `${accessToken}`
+        },
+        timeout: 5000,
+        crossDomain: true
+      });
+      console.log('before resp');
+      res.json(response.data);
+    } else {
+      res.status(400).send('Invalid Input parameters');
+    }
+  } catch (error) {
+    console.log('catch-->'+error);
+    if (error.code === 'ECONNABORTED') {
+      res.status(400).send('Error: Request timed out'+ error);
+    } else {
+      res.status(400).send('Error: '+ error);
+    }
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`);
 });
